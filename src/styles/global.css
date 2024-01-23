@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 @layer base {
-  input {
+  input,
+  select {
     @apply border text-sm rounded-sm block w-full p-2.5;
   }
   label {
