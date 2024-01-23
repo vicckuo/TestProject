@@ -13,12 +13,12 @@ export function getNumberIntervals(intervals) {
   let notInclude = [];
 
   for (let interval of intervals) {
-    // if (interval[0] === interval[1]) {
-    //   continue;
-    // }
     if (merged.length === 0 || merged[merged.length - 1][1] < interval[0]) {
       merged.push(interval);
     } else {
+      if (interval[0] === interval[1]) {
+        continue;
+      }
       overlap.push([
         Math.max(merged[merged.length - 1][0], interval[0]),
         Math.min(merged[merged.length - 1][1], interval[1]),
