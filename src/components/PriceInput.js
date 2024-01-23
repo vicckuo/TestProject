@@ -1,14 +1,19 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { addComma } from '../utils/processNumber';
 
 export const PriceInput = () => {
   const [amount, setAmount] = useState('');
   const [isValid, setIsValid] = useState(true);
 
-  const handleInputChange = (e) => {
-    let input = e.target.value.replace(/,/g, '');
+  const inputRef = useRef(null);
 
+  const handleInputChange = (e) => {
+    const cursorPosition = e.target.selectionStart;
+    const originalLength = e.target.value.length;
+
+    let input = e.target.value.replace(/,/g, '');
     const valid = /^[0-9]*\.?[0-9]*$/.test(input);
+
     if (!valid) {
       // setIsValid(false);
       return;
@@ -16,6 +21,17 @@ export const PriceInput = () => {
       input = addComma(input);
       setAmount(input);
       setIsValid(true);
+
+      setTimeout(() => {
+        if (inputRef.current) {
+          const newCursorPosition =
+            cursorPosition + (inputRef.current.value.length - originalLength);
+          inputRef.current.setSelectionRange(
+            newCursorPosition,
+            newCursorPosition
+          );
+        }
+      }, 0);
     }
   };
   // submit將input value 轉成數字用
@@ -32,6 +48,7 @@ export const PriceInput = () => {
           <div className='p-2'>TWD</div>
 
           <input
+            ref={inputRef}
             type='text'
             id='amount'
             value={amount}
