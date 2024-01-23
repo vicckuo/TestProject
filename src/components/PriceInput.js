@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { addComma } from '../utils/processNumber';
 
 export const PriceInput = () => {
-  const [amount, setAmount] = useState('');
+  const [amount, setAmount] = useState(0);
   const [isValid, setIsValid] = useState(true);
 
   const inputRef = useRef(null);
@@ -12,6 +12,11 @@ export const PriceInput = () => {
     const originalLength = e.target.value.length;
 
     let input = e.target.value.replace(/,/g, '');
+
+    if (input.startsWith('0') && input.length > 1 && !input.startsWith('0.')) {
+      input = input.substring(1);
+    }
+
     const valid = /^[0-9]*\.?[0-9]*$/.test(input);
 
     if (!valid) {
