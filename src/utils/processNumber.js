@@ -13,9 +13,9 @@ export function getNumberIntervals(intervals) {
   let notInclude = [];
 
   for (let interval of intervals) {
-    if (interval[0] === interval[1]) {
-      continue;
-    }
+    // if (interval[0] === interval[1]) {
+    //   continue;
+    // }
     if (merged.length === 0 || merged[merged.length - 1][1] < interval[0]) {
       merged.push(interval);
     } else {
