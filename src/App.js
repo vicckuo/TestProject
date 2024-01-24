@@ -1,11 +1,12 @@
-import { AgeGroupSelect } from './components/AgeGroupSelect';
-import { PriceInput } from './components/PriceInput';
+import { AgeGroupPriceList } from './pages/AgeGroupPriceList';
 
 function App() {
+  const handleAgePriceChange = (result) => {
+    console.log('result: ', result);
+  };
   return (
     <div className='App'>
-      <AgeGroupSelect />
-      <PriceInput />
+      <AgeGroupPriceList onChange={handleAgePriceChange} />
     </div>
   );
 }

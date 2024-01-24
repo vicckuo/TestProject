@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { addComma } from '../utils/processNumber';
 
-export const PriceInput = () => {
+export const PriceInput = ({ onPriceChange }) => {
   const [amount, setAmount] = useState(0);
   const [isValid, setIsValid] = useState(true);
 
@@ -19,8 +19,9 @@ export const PriceInput = () => {
 
     const valid = /^[0-9]*\.?[0-9]*$/.test(input);
 
-    if (!valid) {
-      // setIsValid(false);
+    if (input === '') {
+      setIsValid(false);
+
       return;
     } else if (valid) {
       input = addComma(input);
@@ -37,16 +38,12 @@ export const PriceInput = () => {
           );
         }
       }, 0);
+      onPriceChange(parseFloat(input.replace(/,/g, '')));
     }
   };
-  // submit將input value 轉成數字用
-  // const getNumberValue = (formattedString) => {
-  //   return parseFloat(formattedString.replace(/,/g, ''));
-  // };
 
-  // getNumberValue(amount);
   return (
-    <div className='max-w-md mx-auto bg-white p-8 mt-10 rounded-md shadow-lg'>
+    <div>
       <div>
         <label>入住費用（每人每晚）</label>
         <div className='flex items-center rounded-md bg-gray-200'>
@@ -62,11 +59,11 @@ export const PriceInput = () => {
           ></input>
         </div>
       </div>
-      {isValid ? null : <p className='alert'>不可以為空白</p>}
+      {!isValid && <p className='alert'>不可以為空白</p>}
 
-      <div className='flex items-center justify-end mt-6'>
+      <div className='flex items-center justify-end'>
         <div className='flex items-center'>
-          <p className='ml-2 text-sm'>輸入 0 表示免費</p>
+          <p className='ml-2 text-sm text-gray-500'>輸入 0 表示免費</p>
         </div>
       </div>
     </div>
