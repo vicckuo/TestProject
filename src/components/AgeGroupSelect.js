@@ -27,8 +27,14 @@ export const AgeGroupSelect = ({ onAgeChange, isOverlap }) => {
       }
     });
 
-    setDisabledStartOptions(newDisabledStartOptions);
-    setDisabledEndOptions(newDisabledEndOptions);
+    if (newStartAge === newEndAge) {
+      const range = Array.from({ length: maxAge + 1 }, (_, i) => i);
+      setDisabledStartOptions(range.filter((age) => age !== newStartAge));
+      setDisabledEndOptions(range.filter((age) => age !== newEndAge));
+    } else {
+      setDisabledStartOptions(newDisabledStartOptions);
+      setDisabledEndOptions(newDisabledEndOptions);
+    }
   };
 
   const handleStartAgeChange = (event) => {
