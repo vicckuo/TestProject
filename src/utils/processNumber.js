@@ -6,6 +6,10 @@ export function addComma(number) {
 }
 
 export function getNumberIntervals(intervals) {
+  if (!Array.isArray(intervals) || intervals.length === 0) {
+    return { overlap: [], notInclude: [[0, 20]] };
+  }
+
   intervals.sort((a, b) => a[0] - b[0]);
 
   let overlap = [];
@@ -23,14 +27,8 @@ export function getNumberIntervals(intervals) {
       notInclude.push([lastEnd + 1, start - 1]);
     }
 
-    for (let j = i + 1; j < intervals.length; j++) {
-      let [nextStart, nextEnd] = intervals[j];
-      if (nextStart === nextEnd) {
-        continue;
-      }
-      if (nextStart <= end) {
-        overlap.push([nextStart, Math.min(end, nextEnd)]);
-      }
+    if (i > 0 && start <= intervals[i - 1][1]) {
+      overlap.push([start, Math.min(end, intervals[i - 1][1])]);
     }
 
     lastEnd = Math.max(lastEnd, end);
