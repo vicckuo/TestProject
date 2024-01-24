@@ -8,35 +8,34 @@ export function addComma(number) {
 export function getNumberIntervals(intervals) {
   intervals.sort((a, b) => a[0] - b[0]);
 
-  let merged = [];
   let overlap = [];
   let notInclude = [];
-
-  for (let interval of intervals) {
-    if (merged.length === 0 || merged[merged.length - 1][1] < interval[0]) {
-      merged.push(interval);
-    } else {
-      if (interval[0] === interval[1]) {
-        continue;
-      }
-      overlap.push([
-        Math.max(merged[merged.length - 1][0], interval[0]),
-        Math.min(merged[merged.length - 1][1], interval[1]),
-      ]);
-      merged[merged.length - 1][1] = Math.max(
-        merged[merged.length - 1][1],
-        interval[1]
-      );
-    }
-  }
-
   let lastEnd = -1;
-  for (let [start, end] of merged) {
-    if (lastEnd + 1 < start) {
+
+  for (let i = 0; i < intervals.length; i++) {
+    let [start, end] = intervals[i];
+
+    if (start === end) {
+      continue;
+    }
+
+    if (start > lastEnd + 1) {
       notInclude.push([lastEnd + 1, start - 1]);
     }
-    lastEnd = end;
+
+    for (let j = i + 1; j < intervals.length; j++) {
+      let [nextStart, nextEnd] = intervals[j];
+      if (nextStart === nextEnd) {
+        continue;
+      }
+      if (nextStart <= end) {
+        overlap.push([nextStart, Math.min(end, nextEnd)]);
+      }
+    }
+
+    lastEnd = Math.max(lastEnd, end);
   }
+
   if (lastEnd < 20) {
     notInclude.push([lastEnd + 1, 20]);
   }
